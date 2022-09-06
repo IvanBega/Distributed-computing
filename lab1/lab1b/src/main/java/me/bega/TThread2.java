@@ -4,7 +4,9 @@ public class TThread2 extends Thread{
     @Override
     public void run(){
         while (!this.isInterrupted()) {
-            Main.slider.setValue(90);
+            if (Main.slider.getValue() < 90) {
+                Main.slider.setValue(Main.slider.getValue()+1);
+            }
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e){

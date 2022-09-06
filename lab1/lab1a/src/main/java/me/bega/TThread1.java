@@ -5,7 +5,10 @@ public class TThread1 extends Thread{
     public void run(){
         while (true) {
             synchronized (Main.slider) {
-                Main.slider.setValue(90);
+                if (Main.slider.getValue() > 10) {
+                    Main.slider.setValue(Main.slider.getValue()-1);
+                }
+
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e){

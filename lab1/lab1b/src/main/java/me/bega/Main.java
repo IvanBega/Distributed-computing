@@ -33,8 +33,8 @@ public class Main {
         start2.setText("start 2");
         stop1.setText("stop 1");
         stop2.setText("stop 2");
-        start1.addActionListener((ActionEvent e) -> { if (Semaphor == 1) return; thread1.start(); stop2.setEnabled(false); setSemaphor(1); thread1.setPriority(9); });
-        start2.addActionListener((ActionEvent e) -> { if (Semaphor == 1) return; thread2.start(); stop1.setEnabled(false); setSemaphor(1); thread2.setPriority(1); });
+        start1.addActionListener((ActionEvent e) -> { if (Semaphor == 1) return; thread1.start(); stop2.setEnabled(false); setSemaphor(1); thread1.setPriority(Thread.MIN_PRIORITY); });
+        start2.addActionListener((ActionEvent e) -> { if (Semaphor == 1) return; thread2.start(); stop1.setEnabled(false); setSemaphor(1); thread2.setPriority(Thread.MAX_PRIORITY); });
         stop1.addActionListener((ActionEvent e) -> { thread1.interrupt(); stop2.setEnabled(true); setSemaphor(0); });
         stop2.addActionListener((ActionEvent e) -> { thread2.interrupt(); stop1.setEnabled(true); setSemaphor(0); });
         panel.add(slider);

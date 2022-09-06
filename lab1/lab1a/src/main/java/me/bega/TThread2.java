@@ -5,7 +5,9 @@ public class TThread2 extends Thread{
     public void run(){
         while (true) {
             synchronized (Main.slider) {
-                Main.slider.setValue(10);
+                if (Main.slider.getValue() < 90){
+                    Main.slider.setValue(Main.slider.getValue()+1);
+                }
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e){
