@@ -1,0 +1,11 @@
+
+f	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(±¥¢Ø
+f	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(±¥¢Ø
+t
+java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+O
+java:S2274":Remove this call to "wait" or move it into a "while" loop.(ç£ŠM
+>	java:S108")Either remove or fill this block of code.(ä ¹€
+N	java:S106"9Replace this use of System.out or System.err by a logger.(áÖ¡Ž
+P
+java:S1161":Add the "@Override" annotation above this method signature(áÚ¦Ð

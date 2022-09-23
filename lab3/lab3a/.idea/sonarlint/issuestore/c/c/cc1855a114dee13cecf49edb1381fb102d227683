@@ -1,0 +1,6 @@
+
+j
+java:S4275"HRefactor this setter so that it actually refers to the field "capacity".(ã¼ÓÅøÿÿÿÿ8çÃŞè³0
+a
+java:S2886"FSynchronize this method to match the synchronization on "setCapacity".(Ğò…Áøÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(ƒÑ™

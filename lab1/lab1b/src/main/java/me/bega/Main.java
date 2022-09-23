@@ -1,9 +1,11 @@
 package me.bega;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
+import java.util.Optional;
+
+import os.lab1.compfuncs.basic.Conjunction;
+import os.lab1.compfuncs.basic.DoubleOps;
 
 public class Main {
     public static JSlider slider = new JSlider(0, 100,50);
@@ -15,7 +17,7 @@ public class Main {
     public static Thread thread2 = new TThread2();
     public static int Semaphor = 0;
     public static JLabel label = new JLabel();
-    public static void main(String args[]){
+    public static void main(String args[]) throws InterruptedException {
 
         JFrame win = new JFrame();
         win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,6 +49,7 @@ public class Main {
         win.add(panel);
         win.setContentPane(panel);
         win.setVisible(true);
+        Optional<Double> result = DoubleOps.trialF(5);
     }
     public static void setSemaphor(int id){
         if (id == 1) {
