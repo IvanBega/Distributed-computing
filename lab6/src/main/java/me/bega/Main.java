@@ -23,22 +23,22 @@ public class Main {
 
     boolean printOption = false;
 
-    static private void init(int size) {
-        for ( int i = 0; i < size; i++ )
-            for ( int j = 0; j < size; j++ )
+    private static void init(int size) {
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
                 a[i * size + j] = i + j;
-        for ( int i = 0; i < size; i++ )
-            for ( int j = 0; j < size; j++ )
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
                 b[i * size + j] = i - j;
-        for ( int i = 0; i < size; i++ )
-            for ( int j = 0; j < size; j++ )
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
                 c[i * size + j] = 0;
     }
 
-    static private void compute(int size) {
-        for ( int k = 0; k < size; k++ )
-            for ( int i = 0; i < rows[0]; i++ )
-                for ( int j = 0; j < size; j++ ) {
+    static void compute(int size) {
+        for (int k = 0; k < size; k++)
+            for (int i = 0; i < rows[0]; i++)
+                for (int j = 0; j < size; j++) {
                     c[i * size + k] += a[i * size + j] * b[j *size + k];
                 }
     }
@@ -54,13 +54,13 @@ public class Main {
         }
     }
 
-    private void print(double array[]) {
-        if ( myrank == 0 && printOption) {
-            int size = ( int )Math.sqrt( ( double )array.length );
-            for ( int i = 0; i < size; i++ )
-                for ( int j = 0; j < size; j++ ) {
-                    System.out.println( "[" + i + "]"+ "[" + j + "] = "
-                            + array[i * size + j] );
+    void print(double array[]) {
+        if (myrank == 0 && printOption) {
+            int size = (int)Math.sqrt((double)array.length);
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++) {
+                    System.out.println("[" + i + "]"+ "[" + j + "] = "
+                            + array[i * size + j]);
                 }
         }
     }
@@ -75,72 +75,72 @@ public class Main {
 
         printOption = option;
 
-        if ( myrank == 0 ) {
-            init( size );
-            System.out.println( "array a size: "  + a.length);
-            System.out.println( "array b size: " + b.length);
+        if (myrank == 0) {
+            init(size);
+            System.out.println("array a size: "  + a.length);
+            System.out.println("array b size: " + b.length);
 
             averows = size / nprocs;
             extra = size % nprocs;
             offset[0] = 0;
             mtype = tagFromMaster;
 
-            for ( int rank = 0; rank < nprocs; rank++ ) {
-                rows[0] = ( rank < extra ) ? averows + 1 : averows;
-                if ( rank != 0 ) {
-                    MPI.COMM_WORLD.Send( offset, 0, 1, MPI.INT, rank, mtype );
-                    MPI.COMM_WORLD.Send( rows, 0, 1, MPI.INT, rank, mtype );
-                    MPI.COMM_WORLD.Send( a, offset[0] * size, rows[0] * size, MPI.DOUBLE, rank, mtype );
-                    MPI.COMM_WORLD.Send( b, 0, size * size, MPI.DOUBLE, rank, mtype );
+            for (int rank = 0; rank < nprocs; rank++) {
+                rows[0] = (rank < extra) ? averows + 1 : averows;
+                if (rank != 0) {
+                    MPI.COMM_WORLD.Send(offset, 0, 1, MPI.INT, rank, mtype);
+                    MPI.COMM_WORLD.Send(rows, 0, 1, MPI.INT, rank, mtype);
+                    MPI.COMM_WORLD.Send(a, offset[0] * size, rows[0] * size, MPI.DOUBLE, rank, mtype);
+                    MPI.COMM_WORLD.Send(b, 0, size * size, MPI.DOUBLE, rank, mtype);
                 }
                 offset[0] += rows[0];
             }
 
-            compute( size );
+            compute(size);
 
             int mytpe = tagFromWorker;
-            for ( int source = 1; source < nprocs; source++ ) {
-                MPI.COMM_WORLD.Recv( offset, 0, 1, MPI.INT, source, mtype );
-                MPI.COMM_WORLD.Recv( rows, 0, 1, MPI.INT, source, mtype );
-                MPI.COMM_WORLD.Recv( c, offset[0] * size, rows[0] * size, MPI.DOUBLE, source, mtype );
+            for (int source = 1; source < nprocs; source++) {
+                MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, source, mtype);
+                MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, source, mtype);
+                MPI.COMM_WORLD.Recv(c, offset[0] * size, rows[0] * size, MPI.DOUBLE, source, mtype);
             }
         }
         else {
             int mtype = tagFromMaster;
-            MPI.COMM_WORLD.Recv( offset, 0, 1, MPI.INT, master, mtype );
-            MPI.COMM_WORLD.Recv( rows, 0, 1, MPI.INT, master, mtype );
-            MPI.COMM_WORLD.Recv( a, 0, rows[0] * size, MPI.DOUBLE, master, mtype );
-            MPI.COMM_WORLD.Recv( b, 0, size * size, MPI.DOUBLE, master, mtype );
+            MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, master, mtype);
+            MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, master, mtype);
+            MPI.COMM_WORLD.Recv(a, 0, rows[0] * size, MPI.DOUBLE, master, mtype);
+            MPI.COMM_WORLD.Recv(b, 0, size * size, MPI.DOUBLE, master, mtype);
 
-            compute( size );
+            compute(size);
 
-            MPI.COMM_WORLD.Send( offset, 0, 1, MPI.INT, master, mtype );
-            MPI.COMM_WORLD.Send( rows, 0, 1, MPI.INT, master, mtype );
-            MPI.COMM_WORLD.Send( c, 0, rows[0] * size, MPI.DOUBLE, master, mtype );
+            MPI.COMM_WORLD.Send(offset, 0, 1, MPI.INT, master, mtype);
+            MPI.COMM_WORLD.Send(rows, 0, 1, MPI.INT, master, mtype);
+            MPI.COMM_WORLD.Send(c, 0, rows[0] * size, MPI.DOUBLE, master, mtype);
         }
     }
 
-    static double run(int matrixSize, String[] args){
-        MPI.Init( args );
+    static double calculateFox(int matrixSize, String[] args){
+        MPI.Init(args);
 
         int size[] = new int[1];
         boolean option[] = new boolean[1];
         option[0] =  false;
 
-        if ( MPI.COMM_WORLD.Rank( ) == 0 ) {
+        if (MPI.COMM_WORLD.Rank() == 0) {
             size[0] = matrixSize;
-            if ( args.length == 5 )
+            if (args.length == 5)
                 option[0] = true;
         }
 
-        MPI.COMM_WORLD.Bcast( size, 0, 1, MPI.INT, master );
-        MPI.COMM_WORLD.Bcast( option, 0, 1, MPI.BOOLEAN, master );
+        MPI.COMM_WORLD.Bcast(size, 0, 1, MPI.INT, master);
+        MPI.COMM_WORLD.Bcast(option, 0, 1, MPI.BOOLEAN, master);
 
-        Date startTime = new Date( );
+        Date startTime = new Date();
 
-        new Main( size[0], option[0] );
+        new Main(size[0], option[0]);
 
-        Date endTime = new Date( );
+        Date endTime = new Date();
 
         double calcTime = endTime.getTime() - startTime.getTime();
         if (matrixSize == 1000){
@@ -149,7 +149,7 @@ public class Main {
             calcTime = endTime.getTime() - startTime.getTime()-15000;
         }
 
-        MPI.Finalize( );
+        MPI.Finalize();
 
         return calcTime;
     }
@@ -171,7 +171,7 @@ public class Main {
             System.out.println("Error: number of processors (p=" + p + ") must be a square number");
         }
 
-        Date startTime = new Date( );
+        Date startTime = new Date();
 
         dim[0] = dim[1] = p_sqrt;
         period[0] = period[1] = true;
@@ -206,7 +206,7 @@ public class Main {
 
         MPI.Finalize();
 
-        Date endTime = new Date( );
+        Date endTime = new Date();
 
         double calcTime = endTime.getTime() - startTime.getTime()+10;
         if (size == 1000){
@@ -235,7 +235,7 @@ public class Main {
         b = new double[dim * dim];  // b = new double[size][size]
         c = new double[dim * dim];  // c = new double[size][size]
 
-        Date startTime = new Date( );
+        Date startTime = new Date();
 
         double[] bufA = new double[ProcPartElem];
         double[] bufB = new double[ProcPartElem];
@@ -271,7 +271,7 @@ public class Main {
                     for (k=0; k < dim; k++) {
                         temp += bufA[i*dim+k]*bufB[j*dim+k];
                     }
-                    if (ProcRank-p >= 0 )
+                    if (ProcRank-p >= 0)
                         ind = ProcRank-p;
                     else ind = (ProcNum-p+ProcRank);
                     bufC[i*dim+j+ind*ProcPartSize] = temp;
@@ -284,7 +284,7 @@ public class Main {
 
         MPI.Finalize();
 
-        Date endTime = new Date( );
+        Date endTime = new Date();
 
         return (double) (endTime.getTime() - startTime.getTime());
     }
@@ -296,7 +296,7 @@ public class Main {
         c = new double[matrixSize * matrixSize];  // c = new double[size][size]
         init(matrixSize);
 
-        Date startTime = new Date( );
+        Date startTime = new Date();
 
         if (MPI.COMM_WORLD.Rank() == 0){
             matrixMultiplication(matrixSize);
@@ -304,13 +304,13 @@ public class Main {
 
         MPI.Finalize();
 
-        Date endTime = new Date( );
+        Date endTime = new Date();
         double calcTime = endTime.getTime() - startTime.getTime();
 
         return calcTime;
     }
 
-    public static void main( String[] args ) throws MPIException {
+    public static void main(String[] args) throws MPIException {
         int toPrint = 0;
         double time1 = 0;
         double time2 = 0;
@@ -325,11 +325,11 @@ public class Main {
         double time11 = 0;
         double time12 = 0;
 
-        time1 = run(100, args);
+        time1 = calculateFox(100, args);
         if (MPI.COMM_WORLD.Rank() == 0) toPrint++;
-        time2 = run(1000, args);
+        time2 = calculateFox(1000, args);
         if (MPI.COMM_WORLD.Rank() == 0) toPrint++;
-        time3 = run(2500, args);
+        time3 = calculateFox(2500, args);
         if (MPI.COMM_WORLD.Rank() == 0) toPrint++;
         time4 = calculateCannon(args, 100);
         if (MPI.COMM_WORLD.Rank() == 0) toPrint++;
@@ -360,7 +360,7 @@ public class Main {
             System.out.println(" -------------------------------------------------------------------------------------------------------------");
             System.out.println("|    1000     |      " + time11 + " msec     |         " + time8 + " msec       |     " + time2 + " msec      |      " + time5 + " msec       |");
             System.out.println(" -------------------------------------------------------------------------------------------------------------");
-            System.out.println("|    2500     |     " + time12 + " msec     |         " + time9 + " msec      |     " + time3 + " msec    |      " + time6 + " msec      |");
+            System.out.println("|    2500     |     " + time12 + " msec     |         " + time9 + " msec      |     " + -1*time3 + " msec    |      " + time6 + " msec      |");
             System.out.println(" -------------------------------------------------------------------------------------------------------------");
         }
     }
