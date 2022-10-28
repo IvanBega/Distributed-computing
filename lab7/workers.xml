@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <factory>
-    <group id="1" name=" first">
+    <group id="1" name=" newFirst">
         <worker birthdate="2022-10-24" bonus="true" group="1" id="1" name="Ivan" salary="0.0"/>
         <worker birthdate="2022-10-24" bonus="true" group="1" id="2" name="Ivan" salary="0.0"/>
         <worker birthdate="2022-10-24" bonus="true" group="1" id="3" name="Ivan" salary="0.0"/>
+        <worker birthdate="2022-10-24" bonus="true" group="1" id="4" name="Ivan" salary="0.0"/>
     </group>
 </factory>

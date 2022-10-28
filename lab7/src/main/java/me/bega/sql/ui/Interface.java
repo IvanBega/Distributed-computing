@@ -69,7 +69,7 @@ public class Interface {
     }
     private void printOptions() {
         System.out.println("1 - add worker\n2 - add group\n3 - delete worker\n4 - delete group\n" +
-                "5 - update group\n6 - update worker\n7 - get a\n8 - get all groups" +
+                "5 - update group\n6 - update worker\n7 - get all workers from group\n8 - get all groups" +
                 "\n9 - exit");
     }
     private void addWorker() {
