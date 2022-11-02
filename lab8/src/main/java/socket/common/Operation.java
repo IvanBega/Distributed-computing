@@ -10,7 +10,8 @@ public enum Operation {
     GET_WORKER_FROM_GROUP(4),
     ADD_WORKER(5),
     UPDATE_WORKER(6),
-    DELETE_WORKER(7);
+    DELETE_WORKER(7),
+    GET_WORKETS_COUNT_IN_GROUP(8);
 
     public final int id;
     private static final HashMap<Integer, Operation> operations = new HashMap<>();

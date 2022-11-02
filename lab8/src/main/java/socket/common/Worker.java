@@ -1,8 +1,9 @@
 package socket.common;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Worker implements Cloneable{
+public class Worker implements Serializable {
     private int id;
 
     private int groupId;
@@ -46,16 +47,6 @@ public class Worker implements Cloneable{
 
     public int getId() {
         return id;
-    }
-
-    @Override
-    public Worker clone() {
-        try {
-            return (Worker) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override

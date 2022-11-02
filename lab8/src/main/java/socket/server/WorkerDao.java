@@ -89,4 +89,16 @@ public class WorkerDao {
             throw new RuntimeException(e);
         }
     }
+
+    public int getWorkersCountInGroup(int groupId) {
+        String sql = "SELECT COUNT(*) FROM WORKER WHERE ID_DEP = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, groupId);
+
+            ResultSet result = statement.executeQuery();
+            return result.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

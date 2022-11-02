@@ -133,6 +133,16 @@ public final class ServerOperations {
                     out.flush();
                 }
             };
+            case GET_WORKETS_COUNT_IN_GROUP -> new ServerOperation(groupDao, workerDao) {
+                @Override
+                public void handleQuery(ObjectInputStream in, ObjectOutputStream out) throws IOException {
+                    int groupId = in.readInt();
+
+                    int count = workerDao.getWorkersCountInGroup(groupId);
+                    out.writeInt(groupId);
+                    out.flush();
+                }
+            };
         };
     }
 }

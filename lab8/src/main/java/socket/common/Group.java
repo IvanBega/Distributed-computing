@@ -1,6 +1,8 @@
 package socket.common;
 
-public class Group implements Cloneable{
+import java.io.Serializable;
+
+public class Group implements Serializable {
     private int id;
 
     private String name;
@@ -20,16 +22,6 @@ public class Group implements Cloneable{
 
     public int getId() {
         return id;
-    }
-
-    @Override
-    public Group clone() {
-        try {
-            return (Group) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override
